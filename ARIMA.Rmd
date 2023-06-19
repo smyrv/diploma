@@ -1,0 +1,36 @@
+---
+title: "ARIMA Sample code"
+output: html_notebook
+---
+
+ 
+
+```{r}
+library(readr)
+df <- read_csv("~/datacet.csv")
+print(df)
+```
+```{r}
+library(forecast)
+
+ts_data <- ts(df$val)
+
+diff_data <- diff(ts_data)
+
+order <- c(0, 1, 1)  # (p, d, q)
+seasonal_order <- c(1, 1, 0, 12)  # (P, D, Q, s)
+
+arima_model <- arima(diff_data, order = order, seasonal = seasonal_order)
+
+summary(arima_model)
+
+
+forecast_result <- forecast(arima_model, h = 10) 
+
+# Plot the forecasted values
+plot(forecast_result, main = "ARIMA Forecast")
+
+
+
+```
+
